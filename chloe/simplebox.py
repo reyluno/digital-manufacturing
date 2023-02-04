@@ -41,8 +41,8 @@ class box():
         self.x = x
         self.y = y
         self.text = text.upper()
-        self.width = self.x*1000
-        self.height = self.y*1000
+        self.width = 1000
+        self.height = 1000
 
     def draw(self):
         with cairo.SVGSurface("gen.svg", self.width, self.height) as surface:
@@ -76,7 +76,7 @@ class box():
             cr.stroke()
 
 def main():
-    obj = box(.9,.9,"ass")
+    obj = box(.9,.9,"xd")
     obj.draw()
 
 if __name__ == '__main__':
