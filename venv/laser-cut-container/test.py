@@ -10,7 +10,7 @@ length = input("Enter a length of your desired box: ")
 
 width = input("Enter a width of your desired box: ")
 
-height = input("Enter a height for your desired box: ")
+height = input("Enter a height for your desired box: ") 
 
 #inc = length/5
 

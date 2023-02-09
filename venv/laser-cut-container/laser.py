@@ -23,7 +23,7 @@ ctx = c.Context(surface)
 
 ctx.scale(WIDTH, HEIGHT)  # Normalizing the canvas
 
-# ctx.rectangle(0, 0, 1, 1)  # Rectangle(x0, y0, x1, y1)
+# ctx.rectangle(0, 0, 1,              1)  # Rectangle(x0, y0, x1, y1)
 
 # ctx.translate(0.1, 0.1)  # Changing the current transformation matrix
 
