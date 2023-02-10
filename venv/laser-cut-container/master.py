@@ -3,7 +3,14 @@
 # User inputted variables
 d = float(input("Please input an overall depth for the container: ")) #Recommended: 100
 L = float(input("Please input an overall length for the container: ")) #Recommended: 125-150
-hp = float(input("Please input a height for the pencil holder: ")) # Recommended: 220 - r
+hp = float(input("Please input a height for the pencil holder: ")) # Recommended: 220 - r (> 120)
+
+baseText = input("Please enter text you'd like engraved on the base of the organizer: ") # Determine char max
+fontSize = 10
+if(len(baseText) > 5):
+    fontSize = 8
+
+frontText = input("Please enter text you'd like engraved on the front of the container: ") # Determine char max
 
 # Global variables
 H = 300 # Overall height
@@ -25,7 +32,13 @@ def Base():
     baseOutput = output # Instantiate svg with the same basic starter
     baseOutput += f'<path d="M5 5 l{dp} 0 l0 {l} l{t} 0 a{r} {r} 0 0 1 {-2*r} 0 l{t} 0 l{0} {-l}" stroke="black" stroke-width="1" fill="none"/>'
     # Cut out tab for spine
-    baseOutput += f'<rect x="{5+dp/3}" y="{5+l-t}" width="{dp/3}" height="{t}" stroke="black" stroke-width="1" fill="none"/>'
+    baseOutput += f'<rect x="{5+dp/3}" y="{5+l}" width="{dp/3}" height="{t}" stroke="black" stroke-width="1" fill="none"/>'
+
+    # User-specified text
+    baseOutput += '<style type="text/css">.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}.st1{font-family:\'LEMONMILK-Bold\';}.st2{font-size:'
+    baseOutput += f'{fontSize}px;'
+    baseOutput += '}</style>'
+    baseOutput += f'<text x="{r}" y="{l+r/2}" dominant-baseline="middle" text-anchor="middle" class="st1 st2">{baseText}</text>'
     # End svg
     baseOutput += '\n</svg>'
     f = open('base.svg', 'w')
@@ -50,10 +63,17 @@ def Spine():
 
 def Sides():
     sideOutput = output
-    sideOutput += f'<rect x="5" y="5" width="{l}" height="{h}" stroke="black" stroke-width="1" fill="none" />'
-    sideOutput += f'<rect x="{5 + l}" y="5" width="{l}" height="{h}" stroke="black" stroke-width="1" fill="none" />'
-    sideOutput += f'<rect x="{5 + 2*l}" y="5" width="{d}" height="{h}" stroke="black" stroke-width="1" fill="none" />' # Front panel
+    sideOutput += f'<rect x="5" y="5" width="{l}" height="{hp}" stroke="black" stroke-width="1" fill="none" />'
+    sideOutput += f'<rect x="{5 + l}" y="5" width="{l}" height="{hp}" stroke="black" stroke-width="1" fill="none" />'
 
+    sideOutput += f'<rect x="{5 + 2*l}" y="5" width="{d}" height="{hp}" stroke="black" stroke-width="1" fill="none" />' # Front panel
+    sideOutput += '<style type="text/css">.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}.st1{font-family:\'LEMONMILK-Bold\';}.st2{font-size:10px;}.st3{font-size:7px;}</style>'
+    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/4}" dominant-baseline="middle" text-anchor="middle" class="st1 st2">{frontText}</text>'
+
+    # Add SEAS logo + Digital Manufacturing
+    sideOutput += f'<image x="{5 + 2*l + d/2 - 10}" y="{hp/3 + 10}" width="20" height="22.3" xlink:href="seas.svg" />'
+    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/3 + 45}" dominant-baseline="middle" text-anchor="middle" class="st1 st3">Digital</text>'
+    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/3 + 55}" dominant-baseline="middle" text-anchor="middle" class="st1 st3">Manufacturing</text>'
     # ADD CIRCLES AND SCREW CONTOURS
 
     sideOutput += '\n</svg>'
