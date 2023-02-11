@@ -33,6 +33,8 @@ def Base():
     baseOutput += f'<path d="M5 5 l{dp} 0 l0 {l} l{t} 0 a{r} {r} 0 0 1 {-2*r} 0 l{t} 0 l{0} {-l}" stroke="black" stroke-width="1" fill="none"/>'
     # Cut out tab for spine
     baseOutput += f'<rect x="{5+dp/3}" y="{5+l}" width="{dp/3}" height="{t}" stroke="black" stroke-width="1" fill="none"/>'
+    baseOutput += f'<path d="M{5+dp/2} 5 v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -2.2" stroke="black" stroke-width="1" fill="none"/>'
+
 
     # User-specified text
     baseOutput += '<style type="text/css">.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}.st1{font-family:\'LEMONMILK-Bold\';}.st2{font-size:'
@@ -65,6 +67,11 @@ def Sides():
     sideOutput = output
     sideOutput += f'<rect x="5" y="5" width="{l}" height="{hp}" stroke="black" stroke-width="1" fill="none" />'
     sideOutput += f'<rect x="{5 + l}" y="5" width="{l}" height="{hp}" stroke="black" stroke-width="1" fill="none" />'
+    sideOutput += f'<path d="M50 50 v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -2.2" stroke="black" stroke-width="1" fill="none"/>'
+    #CHANGE THE ABOVE TO GO TO THE BOTTOM OF THE SIDES
+    sideOutput += f'<path d="M5 {5+0.2*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M5 {5+0.8*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
+
 
     sideOutput += f'<rect x="{5 + 2*l}" y="5" width="{d}" height="{hp}" stroke="black" stroke-width="1" fill="none" />' # Front panel
     sideOutput += '<style type="text/css">.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}.st1{font-family:\'LEMONMILK-Bold\';}.st2{font-size:10px;}.st3{font-size:7px;}</style>'
