@@ -1,9 +1,5 @@
 <!-- Desk Organizer SVG by Nico Aldana and Silvester Nava c2023 -->
 <!-- Scale: 1:1 pixels to mm -->
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="305" height="457">
-<<<<<<< Updated upstream
-<path d="M5 55.0 a50.0 50.0 0 0 1 100.0 0 l0 250.0 l-34.391666666666666 0 l0 3.175 l-31.21666666666667 0 l0 -3.175 l-34.391666666666666 0 l0 -250.0" stroke="black" stroke-width="1" fill="none"/><rect x="45.0" y="21.666666666666668" width="20" height="3.175" stroke="black" stroke-width="1" fill="none"/>
-=======
 <path d="M5 55.0 a50.0 50.0 0 0 1 100.0 0 l0 250.0 l-34.391666666666666 0 l0 3.175 l-31.21666666666667 0 l0 -3.175 l-34.391666666666666 0 l0 -250.0" stroke="black" stroke-width="1" fill="none"/><rect x="45.0" y="21.666666666666668" width="20" height="3.175" stroke="black" stroke-width="1" fill="none"/><circle cx="7.4" cy="127.2" r="1.2" stroke="black" stroke-width="1" fill="none"/><circle cx="7.4" cy="259.2" r="1.2" stroke="black" stroke-width="1" fill="none"/><circle cx="102.4" cy="127.2" r="1.2" stroke="black" stroke-width="1" fill="none"/><circle cx="102.4" cy="259.2" r="1.2" stroke="black" stroke-width="1" fill="none"/>
->>>>>>> Stashed changes
 </svg>

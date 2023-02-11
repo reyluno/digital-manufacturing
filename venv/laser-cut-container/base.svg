@@ -1,9 +1,5 @@
 <!-- Desk Organizer SVG by Nico Aldana and Silvester Nava c2023 -->
 <!-- Scale: 1:1 pixels to mm -->
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="305" height="457">
-<<<<<<< Updated upstream
-<path d="M5 5 l93.65 0 l0 75.0 l3.175 0 a50.0 50.0 0 0 1 -100.0 0 l3.175 0 l0 -75.0" stroke="black" stroke-width="1" fill="none"/><rect x="36.21666666666667" y="80.0" width="31.21666666666667" height="3.175" stroke="black" stroke-width="1" fill="none"/><path d="M51.825 5 v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -2.2" stroke="black" stroke-width="1" fill="none"/><style type="text/css">.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}.st1{font-family:'LEMONMILK-Bold';}.st2{font-size:10px;}</style><text x="50.0" y="100.0" dominant-baseline="middle" text-anchor="middle" class="st1 st2">ome</text>
-=======
 <path d="M5 5 l93.65 0 l0 75.0 l3.175 0 a50.0 50.0 0 0 1 -100.0 0 l3.175 0 l0 -75.0" stroke="black" stroke-width="1" fill="none"/><rect x="36.21666666666667" y="80.0" width="31.21666666666667" height="3.175" stroke="black" stroke-width="1" fill="none"/><path d="M51.825 5 v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -2.2" stroke="black" stroke-width="1" fill="none"/><path d="M5 41.2 v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/><path d="M92.30000000000001 42.5 h 1.8 v -1.3 h 1.6 v 1.3 h 3 v 2.2 h -3 v 1.5 h -1.6 v -1.5 h -1.8 v -2.2" stroke="black" stroke-width="1" fill="none"/><style type="text/css">.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}.st1{font-family:'LEMONMILK-Bold';}.st2{font-size:10px;}</style><text x="50.0" y="100.0" dominant-baseline="middle" text-anchor="middle" class="st1 st2">0</text>
->>>>>>> Stashed changes
 </svg>

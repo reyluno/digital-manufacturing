@@ -33,6 +33,7 @@ def Base():
     baseOutput += f'<path d="M5 5 l{dp} 0 l0 {l} l{t} 0 a{r} {r} 0 0 1 {-2*r} 0 l{t} 0 l{0} {-l}" stroke="black" stroke-width="1" fill="none"/>'
     # Cut out tab for spine
     baseOutput += f'<rect x="{5+dp/3}" y="{5+l}" width="{dp/3}" height="{t}" stroke="black" stroke-width="1" fill="none"/>'
+    #Center Screwhole
     baseOutput += f'<path d="M{5+dp/2} 5 v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -2.2" stroke="black" stroke-width="1" fill="none"/>'
     #Left Screwhole
     baseOutput += f'<path d="M5 {5+0.5*l-1.3} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
@@ -75,9 +76,10 @@ def Sides():
     sideOutput = output
     sideOutput += f'<rect x="5" y="5" width="{l}" height="{hp}" stroke="black" stroke-width="1" fill="none" />'
     sideOutput += f'<rect x="{5 + l}" y="5" width="{l}" height="{hp}" stroke="black" stroke-width="1" fill="none" />'
-    sideOutput += f'<path d="M{5 + 0.5*l} {hp-1.4} v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -2.2" stroke="black" stroke-width="1" fill="none"/>'
-    sideOutput += f'<path d="M{5 + 0.5*l + l} {hp-1.4} v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -2.2" stroke="black" stroke-width="1" fill="none"/>'
-    
+    #Bottom of Side Piece center holes
+    sideOutput += f'<circle cx="{5 + 0.5*l}" cy="{hp+2.4}" r="1.2" stroke="black" stroke-width="1" fill="none" />'
+    sideOutput += f'<circle cx="{5 + 0.5*l + l}" cy="{hp+2.4}" r="1.2" stroke="black" stroke-width="1" fill="none" />'
+
     #Facing rights
     sideOutput += f'<path d="M5 {5+0.2*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
     sideOutput += f'<path d="M5 {5+0.8*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
@@ -91,7 +93,7 @@ def Sides():
     sideOutput += f'<path d="M{5+2*l-6.4} {5+0.8*hp+1.3} h 1.8 v -1.3 h 1.6 v 1.3 h 3 v 2.2 h -3 v 1.5 h -1.6 v -1.5 h -1.8 v -2.2" stroke="black" stroke-width="1" fill="none"/>'
 
     sideOutput += f'<rect x="{5 + 2*l}" y="5" width="{d}" height="{hp}" stroke="black" stroke-width="1" fill="none" />' # Front panel
-    #put code for front panel holes here:
+    #Front Panel Holes
     sideOutput += f'<circle cx="{2.4+5+2*l}" cy="{5+2.4+0.8*hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
     sideOutput += f'<circle cx="{2.4+5+2*l}" cy="{5+2.4+0.2*hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
     sideOutput += f'<circle cx="{2.4+0.3+2*l+d}" cy="{5+2.4+0.8*hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
