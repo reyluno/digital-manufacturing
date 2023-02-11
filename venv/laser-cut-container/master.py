@@ -34,6 +34,13 @@ def Base():
     # Cut out tab for spine
     baseOutput += f'<rect x="{5+dp/3}" y="{5+l}" width="{dp/3}" height="{t}" stroke="black" stroke-width="1" fill="none"/>'
     baseOutput += f'<path d="M{5+dp/2} 5 v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -2.2" stroke="black" stroke-width="1" fill="none"/>'
+<<<<<<< Updated upstream
+=======
+    #left screwhole
+    baseOutput += f'<path d="M5 {5+0.5*l-1.3} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
+    #Right Screwhole
+    baseOutput += f'<path d="M{5+dp-2*t} {5+0.5*l} h 1.8 v -1.3 h 1.6 v 1.3 h 3 v 2.2 h -3 v 1.5 h -1.6 v -1.5 h -1.8 v -2.2" stroke="black" stroke-width="1" fill="none"/>'
+>>>>>>> Stashed changes
 
 
     # User-specified text
@@ -55,6 +62,10 @@ def Spine():
     spineOutput += f'<path d="M5 {5+r} a{r} {r} 0 0 1 {2*r} 0 l0 {h} l{-(d-dp/3)/2} 0 l0 {t} l{-dp/3} 0 l0 {-t} l{-(d-dp/3)/2} 0 l0 {-h}" stroke="black" stroke-width="1" fill="none"/>'
     spineOutput += f'<rect x="{rectX}" y="{rectY}" width="20" height="{t}" stroke="black" stroke-width="1" fill="none"/>'
     # ADD CIRCLES FOR SCREW HOLES HERE
+    spineOutput += f'<circle cx="{5+2.4}" cy="{H-0.8*hp+3.2}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    spineOutput += f'<circle cx="{5+2.4}" cy="{H-0.2*hp+3.2}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    spineOutput += f'<circle cx="{2.4+d}" cy="{H-0.8*hp+3.2}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    spineOutput += f'<circle cx="{2.4+d}" cy="{H-0.2*hp+3.2}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
 
     # ADD HOOK PIECE CUTOUT
     #spineOutput += f'<path d="" stroke="black" stroke-width="1" fill="none"/>'
@@ -67,13 +78,38 @@ def Sides():
     sideOutput = output
     sideOutput += f'<rect x="5" y="5" width="{l}" height="{hp}" stroke="black" stroke-width="1" fill="none" />'
     sideOutput += f'<rect x="{5 + l}" y="5" width="{l}" height="{hp}" stroke="black" stroke-width="1" fill="none" />'
+<<<<<<< Updated upstream
     sideOutput += f'<path d="M50 50 v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -2.2" stroke="black" stroke-width="1" fill="none"/>'
     #CHANGE THE ABOVE TO GO TO THE BOTTOM OF THE SIDES
     sideOutput += f'<path d="M5 {5+0.2*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
     sideOutput += f'<path d="M5 {5+0.8*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
 
+=======
+    sideOutput += f'<path d="M{5 + 0.5*l} {hp-1.4} v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -2.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M{5 + 0.5*l + l} {hp-1.4} v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -2.2" stroke="black" stroke-width="1" fill="none"/>'
+    
+    #Facing rights
+    sideOutput += f'<path d="M5 {5+0.2*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M5 {5+0.8*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M{5+l} {5+0.2*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M{5+l} {5+0.8*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'    
+    
+    #Facing lefts
+    sideOutput += f'<path d="M{5+l-6.4} {5+0.2*hp+1.3} h 1.8 v -1.3 h 1.6 v 1.3 h 3 v 2.2 h -3 v 1.5 h -1.6 v -1.5 h -1.8 v -2.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M{5+l-6.4} {5+0.8*hp+1.3} h 1.8 v -1.3 h 1.6 v 1.3 h 3 v 2.2 h -3 v 1.5 h -1.6 v -1.5 h -1.8 v -2.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M{5+2*l-6.4} {5+0.2*hp+1.3} h 1.8 v -1.3 h 1.6 v 1.3 h 3 v 2.2 h -3 v 1.5 h -1.6 v -1.5 h -1.8 v -2.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M{5+2*l-6.4} {5+0.8*hp+1.3} h 1.8 v -1.3 h 1.6 v 1.3 h 3 v 2.2 h -3 v 1.5 h -1.6 v -1.5 h -1.8 v -2.2" stroke="black" stroke-width="1" fill="none"/>'
+>>>>>>> Stashed changes
 
     sideOutput += f'<rect x="{5 + 2*l}" y="5" width="{d}" height="{hp}" stroke="black" stroke-width="1" fill="none" />' # Front panel
+    #put code for front panel holes here:
+    sideOutput += f'<circle cx="{2.4+5+2*l}" cy="{5+2.4+0.8*hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<circle cx="{2.4+5+2*l}" cy="{5+2.4+0.2*hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<circle cx="{2.4+0.3+2*l+d}" cy="{5+2.4+0.8*hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<circle cx="{2.4+0.3+2*l+d}" cy="{5+2.4+0.2*hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<circle cx="{5+2*l+0.5*d}" cy="{2.4+hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+
+
     sideOutput += '<style type="text/css">.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}.st1{font-family:\'LEMONMILK-Bold\';}.st2{font-size:10px;}.st3{font-size:7px;}</style>'
     sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/4}" dominant-baseline="middle" text-anchor="middle" class="st1 st2">{frontText}</text>'
 
