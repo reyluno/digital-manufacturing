@@ -16,13 +16,13 @@ def check_input(lower, upper, prompt):
 print("Welcome to Nico & Silvester's Desk Organizer Generator! Please enter parameters. All measurements are in millimeters.")
 
 # User inputted variables
-d = check_input(90, 110, "Please input an overall depth for the container (Recommended: 90-110 mm): ")
-L = check_input(125, 150, "Please input an overall length for the container (Recommended: 125-150 mm): ")
+d = check_input(80, 105, "Please input an overall depth for the container (Recommended: 80-105 mm): ")
+L = check_input(120, 150, "Please input an overall length for the container (Recommended: 120-150 mm): ")
 hp = check_input(100, 140, "Please input a height for the pencil holder (Recommended: 100-140 mm): ")
-
-baseText = input("Please enter text you'd like engraved on the base of the organizer: ") # Determine appropriate font size for text length
+baseText = input("Please enter text you'd like engraved on the base of the organizer: ") 
 frontText = input("Please enter text you'd like engraved on the front of the container: ")
 
+# Determine appropriate font size for text length
 baseFontSize = 10
 frontFontSize = 10
 if(len(baseText) > 6):
@@ -40,6 +40,7 @@ r = d/2 # Half overall width
 l = L - r # Length of pencil-holder segment
 h = H - r # Vertical height of spine
 dp = d-2 * t # Adjusted piece width
+w = d - 2*t # Adjusted lid width
 
 # Header for svg document
 starter = "<!-- Desk Organizer SVG by Nico Aldana and Silvester Nava c2023 -->\n<!-- Scale: 1:1 pts to mm -->\n"
@@ -55,14 +56,17 @@ def Base():
     baseOutput += '<style type="text/css">.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}.st1{font-family:\'LEMONMILK-Bold\';}.st2{font-size:'
     baseOutput += f'{baseFontSize}px;'
     baseOutput += '}</style>'
-    baseOutput += f'<text x="{xOffset - t + r}" y="{l+r/2}" dominant-baseline="middle" text-anchor="middle" class="st1 st2">{baseText}</text>'
+    baseOutput += f'<text x="{xOffset - t + r}" y="{l+r/2}" dominant-baseline="middle" text-anchor="middle" class="st2">{baseText}</text>'
 
     #Top Screwhole
-    baseOutput += f'<path d="M{xOffset+dp/2} 5 v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -2.2" stroke="black" stroke-width="1" fill="none"/>'
-    #Left Screwhole
-    baseOutput += f'<path d="M{xOffset} {5+0.5*l-1.3} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
-    #Right Screwhole
-    baseOutput += f'<path d="M{xOffset+dp-2*t} {5+0.5*l} h 1.8 v -1.3 h 1.6 v 1.3 h 3 v 2.2 h -3 v 1.5 h -1.6 v -1.5 h -1.8 v -2.2" stroke="black" stroke-width="1" fill="none"/>'
+    baseOutput += f'<path d="M{xOffset + dp/2} 5 h -1.1 v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -1.1" stroke="black" stroke-width="1" fill="none"/>'
+    #Left Screwholes
+    baseOutput += f'<path d="M{xOffset} {5 + l/4} v -1.1 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
+    baseOutput += f'<path d="M{xOffset} {5 + 3*l/4} v -1.1 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
+    #Right Screwholes
+    baseOutput += f'<path d="M{xOffset + dp} {5 + l/4} v -1.1 h -3 v -1.3 h -1.6 v 1.3 h -1.8 v 2.2 h 1.8 v 1.5 h 1.6 v -1.5 h 3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
+    baseOutput += f'<path d="M{xOffset + dp} {5 + 3*l/4} v -1.1 h -3 v -1.3 h -1.6 v 1.3 h -1.8 v 2.2 h 1.8 v 1.5 h 1.6 v -1.5 h 3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
+
     return baseOutput
 
 # Create spine piece paths
@@ -77,10 +81,16 @@ def Spine():
     spineOutput += f'<rect x="{rectX}" y="{rectY}" width="20" height="{t}" stroke="black" stroke-width="1" fill="none"/>'
     
     # Circle Screwholes
-    spineOutput += f'<circle cx="{5+2.4}" cy="{H-0.8*hp+3.2}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
-    spineOutput += f'<circle cx="{5+2.4}" cy="{H-0.2*hp+3.2}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
-    spineOutput += f'<circle cx="{2.4+d}" cy="{H-0.8*hp+3.2}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
-    spineOutput += f'<circle cx="{2.4+d}" cy="{H-0.2*hp+3.2}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    spineOutput += f'<circle cx="{5+2.4}" cy="{5 + H + t - hp/5}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    spineOutput += f'<circle cx="{5+2.4}" cy="{5 + H + t - hp/5}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    spineOutput += f'<circle cx="{2.4+d}" cy="{5 + H + t - 4*hp/5}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    spineOutput += f'<circle cx="{2.4+d}" cy="{5 + H + t - 4*hp/5}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+
+    # Circle Screwholes adjusted
+    spineOutput += f'<circle cx="{5+2.4}" cy="{H-0.8*hp+3.2+5}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    spineOutput += f'<circle cx="{5+2.4}" cy="{H-0.2*hp+3.2+5}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    spineOutput += f'<circle cx="{2.4+d}" cy="{H-0.8*hp+3.2+5}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    spineOutput += f'<circle cx="{2.4+d}" cy="{H-0.2*hp+3.2+5}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
 
     # Generate tab cutout
     spineOutput += f'<path d="M{tabX} {tabY} l30 0 l0 -5 l-5 0 l0 -40 l-20 0 l0 40 l-5 0 l0 5" stroke="black" stroke-width="1" fill="none"/>'
@@ -92,7 +102,6 @@ def Spine():
 # Generate side piece paths
 def Sides():
     yOffset = 5 + H + t + margin
-    w = d - 2*t
 
     # Rectangles
     sideOutput = f'<rect x="5" y="{5 + yOffset}" width="{l}" height="{hp}" stroke="black" stroke-width="1" fill="none" />'
@@ -107,44 +116,46 @@ def Sides():
     sideOutput += '<style type="text/css">.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}.st1{font-family:\'LEMONMILK-Bold\';}.st2{'
     sideOutput += f'font-size:{frontFontSize}px;'
     sideOutput += '}.st3{font-size:7px;}</style>'
-    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/4 + yOffset}" dominant-baseline="middle" text-anchor="middle" class="st1 st2">{frontText}</text>'
+    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/4 + yOffset}" dominant-baseline="middle" text-anchor="middle" class="st2">{frontText}</text>'
 
-    # Bottom of Side Piece center holes
-    sideOutput += f'<circle cx="{5 + 0.5*l}" cy="{yOffset + hp+2.4}" r="1.2" stroke="black" stroke-width="1" fill="none" />'
-    sideOutput += f'<circle cx="{5 + 0.5*l + l}" cy="{yOffset + hp+2.4}" r="1.2" stroke="black" stroke-width="1" fill="none" />'
+    # Side piece bottom screw holes
+    sideOutput += f'<circle cx="{5 + l/4}" cy="{yOffset + hp + 2.4}" r="1.2" stroke="black" stroke-width="1" fill="none" />'
+    sideOutput += f'<circle cx="{5 + 3*l/4}" cy="{yOffset + hp + 2.4}" r="1.2" stroke="black" stroke-width="1" fill="none" />'
+    sideOutput += f'<circle cx="{5 + l + l/4}" cy="{yOffset + hp+2.4}" r="1.2" stroke="black" stroke-width="1" fill="none" />'
+    sideOutput += f'<circle cx="{5 + l + 3*l/4}" cy="{yOffset + hp+2.4}" r="1.2" stroke="black" stroke-width="1" fill="none" />'
 
     # Facing rights
-    sideOutput += f'<path d="M5 {yOffset + 5+0.2*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
-    sideOutput += f'<path d="M5 {yOffset + 5+0.8*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
-    sideOutput += f'<path d="M{5+l} {yOffset + 5+0.2*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
-    sideOutput += f'<path d="M{5+l} {yOffset + 5+0.8*hp} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M5 {yOffset + 5+ hp/5} v -1.1 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M5 {yOffset + 5 + 4*hp/5} v -1.1 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M{5 + l} {yOffset + 5 + hp/5} v -1.1 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M{5 + l} {yOffset + 5 + 4*hp/5} v -1.1 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
 
     # Facing lefts
-    sideOutput += f'<path d="M{5+l-6.4} {yOffset + 5+0.2*hp+1.3} h 1.8 v -1.3 h 1.6 v 1.3 h 3 v 2.2 h -3 v 1.5 h -1.6 v -1.5 h -1.8 v -2.2" stroke="black" stroke-width="1" fill="none"/>'
-    sideOutput += f'<path d="M{5+l-6.4} {yOffset + 5+0.8*hp+1.3} h 1.8 v -1.3 h 1.6 v 1.3 h 3 v 2.2 h -3 v 1.5 h -1.6 v -1.5 h -1.8 v -2.2" stroke="black" stroke-width="1" fill="none"/>'
-    sideOutput += f'<path d="M{5+2*l-6.4} {yOffset + 5+0.2*hp+1.3} h 1.8 v -1.3 h 1.6 v 1.3 h 3 v 2.2 h -3 v 1.5 h -1.6 v -1.5 h -1.8 v -2.2" stroke="black" stroke-width="1" fill="none"/>'
-    sideOutput += f'<path d="M{5+2*l-6.4} {yOffset + 5+0.8*hp+1.3} h 1.8 v -1.3 h 1.6 v 1.3 h 3 v 2.2 h -3 v 1.5 h -1.6 v -1.5 h -1.8 v -2.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M{5+l} {yOffset + 5 + hp/5} v -1.1 h -3 v -1.3 h -1.6 v 1.3 h -1.8 v 2.2 h 1.8 v 1.5 h 1.6 v -1.5 h 3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M{5+l} {yOffset + 5 + 4*hp/5} v -1.1 h -3 v -1.3 h -1.6 v 1.3 h -1.8 v 2.2 h 1.8 v 1.5 h 1.6 v -1.5 h 3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M{5+2*l} {yOffset + 5 + hp/5} v -1.1 h -3 v -1.3 h -1.6 v 1.3 h -1.8 v 2.2 h 1.8 v 1.5 h 1.6 v -1.5 h 3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<path d="M{5+2*l} {yOffset + 5 + 4*hp/5} v -1.1 h -3 v -1.3 h -1.6 v 1.3 h -1.8 v 2.2 h 1.8 v 1.5 h 1.6 v -1.5 h 3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
 
     # Panel holes
-    sideOutput += f'<circle cx="{2.4+5+2*l}" cy="{yOffset + 5+2.4+0.8*hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
-    sideOutput += f'<circle cx="{2.4+5+2*l}" cy="{yOffset + 5+2.4+0.2*hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
-    sideOutput += f'<circle cx="{2.4+0.3+2*l+d}" cy="{yOffset + 5+2.4+0.8*hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
-    sideOutput += f'<circle cx="{2.4+0.3+2*l+d}" cy="{yOffset + 5+2.4+0.2*hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
-    sideOutput += f'<circle cx="{5+2*l+0.5*d}" cy="{yOffset + 2.4+hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<circle cx="{2.4+5+2*l}" cy="{yOffset + 5 + 4*hp/5}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<circle cx="{2.4+5+2*l}" cy="{yOffset + 5 + hp/5}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<circle cx="{2.4+0.3+2*l+d}" cy="{yOffset + 5 + 4*hp/5}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<circle cx="{2.4+0.3+2*l+d}" cy="{yOffset + 5 + hp/5}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
+    sideOutput += f'<circle cx="{5+2*l+ d/2}" cy="{yOffset + 2.4 + hp}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
 
     # Add SEAS logo + Digital Manufacturing
     sideOutput += f'<g transform="translate({5 + 2*l + d/2 - 11}, {hp/3 + 10 + yOffset}) scale(0.25)">{seas_logo()}</g>'
-    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/3 + 45 + yOffset}" dominant-baseline="middle" text-anchor="middle" class="st1 st3">Digital</text>'
-    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/3 + 55 + yOffset}" dominant-baseline="middle" text-anchor="middle" class="st1 st3">Manufacturing</text>'
+    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/3 + 45 + yOffset}" dominant-baseline="middle" text-anchor="middle" class="st3">Digital</text>'
+    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/3 + 55 + yOffset}" dominant-baseline="middle" text-anchor="middle" class="st3">Manufacturing</text>'
 
     return sideOutput
 
 # Generate lid piece path
 def Lid():
-    # Calculate offset here
+    # Calculate offsets
     xOffset = 5 + d + t + margin
     yOffset = 5 + L + margin
-    w = d - 2*t
+
     lidOutput = f'<path d="M{xOffset} {yOffset} l{w} 0 l0 {l/3} l{t} 0 l0 {l/3} l{-t} 0 l0 {l/3} l{-w/3} 0 l0 {t} l{-w/3} 0 l0 {-t} l{-w/3} 0 l0 {-l/3} l{-t} 0 l0 {-l/3} l{t} 0 l0 {-l/3}" stroke="black" stroke-width="1" fill="none" />'
     lidOutput += f'<circle cx="{xOffset + w/4}" cy="{yOffset + l/4}" r="{w/9}" stroke="black" stroke-width="1" fill="none"/>'
     lidOutput += f'<circle cx="{xOffset + w/2}" cy="{yOffset + l/4}" r="{w/9}" stroke="black" stroke-width="1" fill="none"/>'
