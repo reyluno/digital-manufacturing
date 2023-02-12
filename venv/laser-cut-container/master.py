@@ -51,7 +51,19 @@ def Base():
     f = open('base.svg', 'w')
     f.write(baseOutput)
 
+<<<<<<< Updated upstream
 # Create spine piece svg
+=======
+    #Top Screwhole
+    baseOutput += f'<path d="M{xOffset+dp/2} 5 v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -2.2" stroke="black" stroke-width="1" fill="none"/>'
+    #Left Screwhole
+    baseOutput += f'<path d="M{xOffset} {5+0.5*l-1.3-t} v 1.3 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v 2.2" stroke="black" stroke-width="1" fill="none"/>'
+    #Right Screwhole
+    baseOutput += f'<path d="M{xOffset+dp-2*t} {5+0.5*l-t} h 1.8 v -1.3 h 1.6 v 1.3 h 3 v 2.2 h -3 v 1.5 h -1.6 v -1.5 h -1.8 v -2.2" stroke="black" stroke-width="1" fill="none"/>'
+    return baseOutput
+
+# Create spine piece paths
+>>>>>>> Stashed changes
 def Spine():
     # Derived measurements:
     rectX = 5 + (d-20)/2
