@@ -1,4 +1,4 @@
-def sierpinski_triangle(n):
+def sierpinski_triangle(n, x=0, y=0):
     svg_header = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -30,16 +30,17 @@ xmlns="http://www.w3.org/2000/svg">"""
             recursive_triangle([(x31, y31), (x23, y23), (x3, y3)], depth - 1)
 
     size = 2**n
-    x1 = 0
-    y1 = 0
-    x2 = size
-    y2 = 0
-    x3 = size / 2
-    y3 = (3**0.5) / 2 * size
+    x1 = x
+    y1 = y
+    x2 = x + size
+    y2 = y
+    x3 = x + size / 2
+    y3 = y + (3**0.5) / 2 * size
     x_offset = -size / 2
     y_offset = -y3 / 2
     recursive_triangle([(x1 + x_offset, y1 + y_offset), (x2 + x_offset, y2 + y_offset), (x3 + x_offset, y3 + y_offset)], n)
-    f = open('triangle.svg','w')
-    f.write(svg_header + '\n'.join(svg_elements) + svg_footer)
 
-sierpinski_triangle(6)
+    return svg_header + '\n'.join(svg_elements) + svg_footer
+
+f = open('triangle.svg','w')
+f.write(sierpinski_triangle(5, 10, -10))

@@ -16,15 +16,15 @@ def check_input(lower, upper, prompt):
 print("Welcome to Nico & Silvester's Desk Organizer Generator! Please enter parameters. All measurements are in millimeters.")
 
 # User inputted variables
-d = check_input(80, 105, "Please input an overall depth for the container (Recommended: 80-105 mm): ")
+d = check_input(80, 100, "Please input an overall depth for the container (Recommended: 80-100 mm): ")
 L = check_input(120, 150, "Please input an overall length for the container (Recommended: 120-150 mm): ")
 hp = check_input(100, 140, "Please input a height for the pencil holder (Recommended: 100-140 mm): ")
 baseText = input("Please enter text you'd like engraved on the base of the organizer: ") 
 frontText = input("Please enter text you'd like engraved on the front of the container: ")
 
 # Determine appropriate font size for text length
-baseFontSize = 10
-frontFontSize = 10
+baseFontSize = 12
+frontFontSize = 12
 if(len(baseText) > 6):
     baseFontSize = 7
 if(len(frontText) > 6):
@@ -34,6 +34,7 @@ if(len(frontText) > 6):
 H = 300 # Overall height
 t = 3.175 # Acrylic thickness
 margin = 2 # Margin between pieces
+svg_elements = [] # Array for fractal generation
 
 # Derived variables
 r = d/2 # Half overall width
@@ -53,10 +54,10 @@ def Base():
     baseOutput += f'<rect x="{xOffset+dp/3}" y="{5+l}" width="{dp/3}" height="{t}" stroke="black" stroke-width="1" fill="none"/>'
 
     # User-specified text
-    baseOutput += '<style type="text/css">.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}.st1{font-family:\'LEMONMILK-Bold\';}.st2{font-size:'
+    baseOutput += '<style type="text/css">.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}.st1{font-family:\'Impact\';}.st4{font-size:'
     baseOutput += f'{baseFontSize}px;'
     baseOutput += '}</style>'
-    baseOutput += f'<text x="{xOffset - t + r}" y="{l+r/2}" dominant-baseline="middle" text-anchor="middle" class="st2">{baseText}</text>'
+    baseOutput += f'<text x="{xOffset - t + r}" y="{l+r/2}" dominant-baseline="middle" text-anchor="middle" class="st1 st4">{baseText}</text>'
 
     #Top Screwhole
     baseOutput += f'<path d="M{xOffset + dp/2} 5 h -1.1 v 3 h -1.3 v 1.6 h 1.3 v 1.8 h 2.2 v -1.8 h 1.5 v -1.6 h -1.5 v -3 h -1.1" stroke="black" stroke-width="1" fill="none"/>'
@@ -74,8 +75,8 @@ def Spine():
     # Derived measurements:
     rectX = 5 + (d-20)/2
     rectY = 5 + r/3
-    tabX = 5 + (d-30)/2
-    tabY = 5 + h + r/3
+    tabX = 5 + d + margin
+    tabY = 5 + H
 
     spineOutput = f'<path d="M5 {5+r} a{r} {r} 0 0 1 {2*r} 0 l0 {h} l{-(d-dp/3)/2} 0 l0 {t} l{-dp/3} 0 l0 {-t} l{-(d-dp/3)/2} 0 l0 {-h}" stroke="black" stroke-width="1" fill="none"/>'
     spineOutput += f'<rect x="{rectX}" y="{rectY}" width="20" height="{t}" stroke="black" stroke-width="1" fill="none"/>'
@@ -93,10 +94,11 @@ def Spine():
     spineOutput += f'<circle cx="{2.4+d}" cy="{H-0.2*hp+3.2+5}" r="1.2" stroke="black" stroke-width="1" fill="none"/>'
 
     # Generate tab cutout
-    spineOutput += f'<path d="M{tabX} {tabY} l30 0 l0 -5 l-5 0 l0 -40 l-20 0 l0 40 l-5 0 l0 5" stroke="black" stroke-width="1" fill="none"/>'
+    spineOutput += f'<path d="M{tabX} {tabY} v -30 h 5 v 5 h 40 v 20 h -40 v 5 h -5" stroke="black" stroke-width="1" fill="none" />'
 
     # Generate fractal pattern
-    spineOutput += generate_fractal()
+    spineOutput += sierpinski_triangle(6, 5 + r, -d-r)
+
     return spineOutput
 
 # Generate side piece paths
@@ -113,10 +115,10 @@ def Sides():
     sideOutput += f'<path d="M{5 + 4*l/3} {5 + yOffset} l0 {t} l{l/3} 0 l0 {-t}" stroke="black" stroke-width="1" fill="none" />'
     sideOutput += f'<path d="M{5 + 2*l + (d-w/3)/2} {5 + yOffset} l0 {t} l{w/3} 0 l0 {-t}" stroke="black" stroke-width="1" fill="none" />'
 
-    sideOutput += '<style type="text/css">.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}.st1{font-family:\'LEMONMILK-Bold\';}.st2{'
+    sideOutput += '<style type="text/css">.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}.st1{font-family:\'Impact\';}.st2{'
     sideOutput += f'font-size:{frontFontSize}px;'
-    sideOutput += '}.st3{font-size:7px;}</style>'
-    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/4 + yOffset}" dominant-baseline="middle" text-anchor="middle" class="st2">{frontText}</text>'
+    sideOutput += '}.st3{font-size:8px;}</style>'
+    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/4 + yOffset}" dominant-baseline="middle" text-anchor="middle" class="st1 st2">{frontText}</text>'
 
     # Side piece bottom screw holes
     sideOutput += f'<circle cx="{5 + l/4}" cy="{yOffset + hp + 2.4}" r="1.2" stroke="black" stroke-width="1" fill="none" />'
@@ -124,7 +126,7 @@ def Sides():
     sideOutput += f'<circle cx="{5 + l + l/4}" cy="{yOffset + hp+2.4}" r="1.2" stroke="black" stroke-width="1" fill="none" />'
     sideOutput += f'<circle cx="{5 + l + 3*l/4}" cy="{yOffset + hp+2.4}" r="1.2" stroke="black" stroke-width="1" fill="none" />'
 
-    # Facing rights
+    # Facing right screwholes
     sideOutput += f'<path d="M5 {yOffset + 5+ hp/5} v -1.1 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
     sideOutput += f'<path d="M5 {yOffset + 5 + 4*hp/5} v -1.1 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
     sideOutput += f'<path d="M{5 + l} {yOffset + 5 + hp/5} v -1.1 h 3 v -1.3 h 1.6 v 1.3 h 1.8 v 2.2 h -1.8 v 1.5 h -1.6 v -1.5 h -3 v -1.1" stroke="black" stroke-width="1" fill="none"/>'
@@ -145,8 +147,8 @@ def Sides():
 
     # Add SEAS logo + Digital Manufacturing
     sideOutput += f'<g transform="translate({5 + 2*l + d/2 - 11}, {hp/3 + 10 + yOffset}) scale(0.25)">{seas_logo()}</g>'
-    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/3 + 45 + yOffset}" dominant-baseline="middle" text-anchor="middle" class="st3">Digital</text>'
-    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/3 + 55 + yOffset}" dominant-baseline="middle" text-anchor="middle" class="st3">Manufacturing</text>'
+    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/3 + 45 + yOffset}" dominant-baseline="middle" text-anchor="middle" class="st1 st3">Digital</text>'
+    sideOutput += f'<text x="{5 + 2*l + d/2}" y="{hp/3 + 55 + yOffset}" dominant-baseline="middle" text-anchor="middle" class="st1 st3">Manufacturing</text>'
 
     return sideOutput
 
@@ -163,39 +165,41 @@ def Lid():
     lidOutput += f'<rect x="{xOffset + w/4 - w/9}" y="{yOffset + l/2}" width="{w/2 + 2*w/9}" height="{l/3}" rx="3" ry="3" stroke="black" stroke-width="1" fill="none"/>'
     return lidOutput
 
-# Generate fractal pattern
-def fractal_koch(x1, y1, x2, y2, depth):
-    if depth == 0:
-        return f"<line x1='{x1}' y1='{y1}' x2='{x2}' y2='{y2}' stroke='black' stroke-width='1' />"
-    angle = math.radians(60)
-    x3 = x1 + (x2 - x1) / 3
-    y3 = y1 + (y2 - y1) / 3
-    x4 = x1 + (x2 - x1) * 2 / 3
-    y4 = y1 + (y2 - y1) * 2 / 3
-    x5 = x3 + (x4 - x3) * math.cos(angle) + (y4 - y3) * math.sin(angle)
-    y5 = y3 - (x4 - x3) * math.sin(angle) + (y4 - y3) * math.cos(angle)
-    result = fractal_koch(x1, y1, x3, y3, depth - 1)
-    result += fractal_koch(x3, y3, x5, y5, depth - 1)
-    result += fractal_koch(x5, y5, x4, y4, depth - 1)
-    result += fractal_koch(x4, y4, x2, y2, depth - 1)
-    return result
+# Generate Sierpinski triangle fractal
+def sierpinski_triangle(n, x, y):
+    svg_elements = []
+    def recursive_triangle(points, depth):
+        if depth == 0:
+            x1, y1 = points[0]
+            x2, y2 = points[1]
+            x3, y3 = points[2]
+            svg_elements.append(f'<polygon points="{x1},{-y1} {x2},{-y2} {x3},{-y3}" stroke-width="1" fill="black"/>')
+        else:
+            x1, y1 = points[0]
+            x2, y2 = points[1]
+            x3, y3 = points[2]
+            x12 = (x1 + x2) / 2
+            y12 = (y1 + y2) / 2
+            x23 = (x2 + x3) / 2
+            y23 = (y2 + y3) / 2
+            x31 = (x3 + x1) / 2
+            y31 = (y3 + y1) / 2
+            recursive_triangle([(x1, y1), (x12, y12), (x31, y31)], depth - 1)
+            recursive_triangle([(x12, y12), (x2, y2), (x23, y23)], depth - 1)
+            recursive_triangle([(x31, y31), (x23, y23), (x3, y3)], depth - 1)
 
-# Generate fractal as line path
-def generate_fractal():
-    depth = random.randint(5,8)
-    radius = random.randint(int(r/3), int(r/2))
-    center_x = r + 5
-    center_y = 3*r/2
-    pattern = ""
-    for i in range(6):
-        angle1 = math.radians(60 * i)
-        angle2 = math.radians(60 * (i + 1))
-        x1 = center_x + radius * math.cos(angle1)
-        y1 = center_y + radius * math.sin(angle1)
-        x2 = center_x + radius * math.cos(angle2)
-        y2 = center_y + radius * math.sin(angle2)
-        pattern += fractal_koch(x1, y1, x2, y2, depth)
-    return pattern
+    size = 2**n
+    x1 = x
+    y1 = y
+    x2 = x + size
+    y2 = y
+    x3 = x + size / 2
+    y3 = y + (3**0.5) / 2 * size
+    x_offset = -size / 2
+    y_offset = -y3 / 2
+    recursive_triangle([(x1 + x_offset, y1 + y_offset), (x2 + x_offset, y2 + y_offset), (x3 + x_offset, y3 + y_offset)], n)
+
+    return '\n'.join(svg_elements)
 
 # Generate CU SEAS logo as svg path
 def seas_logo():
