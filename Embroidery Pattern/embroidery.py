@@ -1,13 +1,33 @@
 # Embroidery Stitching Program by Nico Aldana & Silvester Nava c2023
-import turtle
+import turtle, math
+from PIL import Image
+import numpy as np
+
+# Some quick notes about generating files:
+
+##################
+## JUMP COMMAND ## --> # stitches += [128, 2, dx, dy,]
+##################
+
+##################
+## TRIM COMMAND ## --> stitches += [128, 128, dx, dy,]
+##################
 
 # Global variables
-s = 10 # Scale factor mm to stitch coordinates, may not be necessary
+points = [] # List that tracks all the turning points of the Hilbert Curve
+interpolated_path = [] # List that plots the Hilbert Curve as a continuous path
 
-# In millimeters (eventually replace with user input)
-width = 1.0 # mm
-dz = 0.2 # mm
+# In 0.1 millimeters
+w = int(input("Enter a width for each stitch, in 0.1 mm (Recommended: 10): "))
+dz = int(input("Enter a tightness for each stitch (Recommended: 2): "))
 
+userOrder = int(input("Enter an order size for the pattern (Recommended: 6): "))
+userSize = int(input("Enter a step size for the pattern (Recommended: 30): "))
+
+# w = 10 # Width of overstitch (10)
+# dz = 2 # Tightness of stitch (2)
+
+# Generate Hilbert Curve
 def hilbert_curve(t, order, size, direction, angle, points):
     if order == 0:
         return
@@ -30,67 +50,160 @@ def hilbert_curve(t, order, size, direction, angle, points):
     hilbert_curve(t, order - 1, size, -direction, angle, points)
     t.right(direction * angle)
 
-def overstitch(w, dz, start_x, start_y, end_x, end_y):
-    # Convert mm to stitches
-    w = int(w*s) # Width of overstitch
-    dz = int(dz*s) # "Tightness" of stitch
-
+# Function to handle vertical and horizontal overstitching
+def overstitch(start, end):
     stitch_output = [] # Starting stitch
-
     # Check if direction of stitch is horizontal or vertical
-    dy = end_y - start_y
-    dx = end_x - start_x
-    
+    dx = end[0] - start[0]
+    dy = end[1] - start[1]
     if dx >= -1 and dx <= 1: # Vertical case
-        print("dy: " + str(dy))
         n = abs(int(int(dy/dz)/2)) # Number of iterations to generate stitch coordinates
-        if dy > 0: # Check direction of stitching
+        # Check direction of stitching
+        if dy > 0: # 8 ^
+            stitch_output += [256 - int(w/2), 0]
             for i in range(0, n):
                 stitch_output += [w, dz,]
                 stitch_output += [256 - w, dz,]
-        else:
+            stitch_output += [int(w/2), 0]
+        else: # 2 v
+            stitch_output += [256 - int(w/2), 0]
             for i in range(0, n):
                 stitch_output += [w, 256 - dz,]
                 stitch_output += [256 - w, 256 - dz,]
+            stitch_output += [int(w/2), 0]
     elif dy >= -1 and dy <= 1: # Horizontal case
-        print("dx: " + str(dx))
         n = abs(int(int(dx/dz)/2))
-        if dx > 0:
-            offset = abs(int(int(w/dz)/2))
-            for i in range(0, n + offset):
+        if dx > 0: # -> 6
+            stitch_output += [0, 256 - int(w/2)]
+            for i in range(0, n):
                 stitch_output += [dz, w,]
                 stitch_output += [dz, 256 - w,]
-        else:
+            stitch_output += [0, int(w/2)]
+        else: # 4 <-
+            stitch_output += [0, 256 - int(w/2)]
             for i in range(0, n):
                 stitch_output += [256 - dz, w,]
                 stitch_output += [256 - dz, 256 - w,]
-    else:
-        print("Error: diagonal line?")
+            stitch_output += [0, int(w/2)]
+    else: # Jump case
+        if abs(dx) > 127:
+            #print("Incoming jump in X")
+            n1 = abs(int(dx/127)) # number of times to jump
+        else: n1 = 1
+        if abs(dy) > 127:
+            #print("Incoming jump in Y")
+            n2 = abs(int(dy/127))
+        else: n2 = 1
+
+        if n1 == 1 and n2 == 1: # If small jump:
+            if dx < 0 and dy > 0: # Jumping NW
+                stitch_output += [128, 2, 256 + dx, dy,]
+            if dx > 0 and dy < 0: # Jumping SE
+                stitch_output += [128, 2, dx, 256 + dy,]
+            if dx < 0 and dy < 0: # Jumping SW
+                stitch_output += [128, 2, 256 + dx, 256 + dy,]
+            if dx > 0 and dy > 0: # Jumping NE
+                stitch_output += [128, 2, dx, dy,]
+        else:  
+            print("Big jump...")
+            if dx < 0 and dy > 0: # Jumping NW
+                print("Jumping northwest.")
+                for i in range(n1):
+                    stitch_output += [128, 2, 256 + int(dx/n1), 128,]
+                for i in range(n2):
+                    stitch_output += [128, 2, 128, int(dy/n2),]
+            elif dx > 0 and dy < 0: # Jumping SE
+                print("Jumping southeast.")
+                for i in range(n1):
+                    stitch_output += [128, 2, int(dx/n1), 128,]
+                for i in range(n2):
+                    stitch_output += [128, 2, 128, 256 + int(dy/n2),]
+            elif dx < 0 and dy < 0: # Jumping SW
+                print("Jumping southwest.")
+                for i in range(n1):
+                    stitch_output += [128, 2, 256 + int(dx/n1), 128,]
+                for i in range(n2):
+                    stitch_output += [128, 2, 128, 256 + int(dy/n2),]
+            elif dx > 0 and dy > 0: # Jumping NE
+                print("Jumping northeast.")
+                for i in range(n1):
+                    stitch_output += [128, 2, int(dx/n1), 128,]
+                for i in range(n2):
+                    stitch_output += [128, 2, 128, int(dy/n2),]
+            else:
+                print("error?")
     return stitch_output
 
-screen = turtle.Screen()
-screen.setup(width=600, height=600)
-screen.title("Hilbert Curve")
-t = turtle.Turtle()
-t.speed(0)
-# Draw the curve
-t.penup()
-t.goto(0, 0)
-t.pendown()
+# Function to interpolate coordinates
+def interpolate(coords, n):
+    interpolated_coords = []
+    for i in range(len(coords) - 1):
+        x0, y0 = coords[i]
+        x1, y1 = coords[i+1]
+        dx = (x1 - x0) / (n+1)
+        dy = (y1 - y0) / (n+1)
+        for j in range(n):
+            x = int(x0 + dx * (j+1))
+            y = int(y0 + dy * (j+1))
+            interpolated_coords.append((x, y))
+    return interpolated_coords
 
-points = []
-hilbert_curve(t, order=5, size=30, direction=1, angle=90, points=points)
-print(points)
 
-# Keep the screen open
-turtle.done()
+
+# Draw the Hilbert Curve in turtle
+def draw():
+    screen = turtle.Screen()
+    screen.setup(width=2000, height=2000)
+    screen.title("Hilbert Curve")
+    t = turtle.Turtle()
+    t.speed(0)
+    # Draw the curve
+    t.penup()
+    t.goto(0, 0)
+    t.pendown()
+    hilbert_curve(t, order=userOrder, size=userSize, direction=1, angle=90, points=points) # Generate points
+    turtle.bye()
+    
+draw()
+
+# Save the list of points as a csv for debugging
+np.savetxt("points.csv", points, delimiter =", ", fmt ='% s')
+
+# Get the interpolated path
+interpolated_path = interpolate(points, 5)
+
+# Find bounding box of the pattern
+def find_max_coordinates(coords):
+    max_x = max(coords, key=lambda item: item[0])[0]
+    min_y = min(coords, key=lambda item: item[1])[1]
+    return max_x, min_y
+
+max_x, min_y = find_max_coordinates(points)
+
+# Function for filtering out coordinates outside of circle
+def filter_coordinates(coords, R, h, k):
+    filtered_coords = []
+    for x, y in coords:
+        distance = math.sqrt((x-h)**2 + (y-k)**2)
+        if distance <= R:
+            filtered_coords.append((x, y))
+    return filtered_coords
+
+# Filter out coordinates
+new_list = filter_coordinates(interpolated_path, 300, max_x * 0.5, min_y *  0.5)
+
+# Save csv for debugging
+np.savetxt("newlist.csv", new_list, delimiter =", ", fmt ='% s')
 # Generate file
-stitches = [128, 2, 0, 0, 128, 128,] # Start at(0,0)
+stitches = [128, 2, 0, 0, 128, 128,]
 
-# Overstitch along the path
+# Generate stitches
 for i in range(0, len(points) - 1):
-    stitches += overstitch(width, dz, points[i][0], points[i][1], points[i+1][0], points[i+1][1])
-#stitches += overstitch(width, dz, 0, 0, 0, -100)
+    stitches += overstitch(points[i], points[i+1])
+
+# Experimental ...
+# for i in range(0, len(new_list) - 1):
+#     stitches += overstitch(new_list[i], new_list[i+1])
 
 stitches += [128, 16] # Last stitch command
 
@@ -128,7 +241,7 @@ jefBytes = [124, 0, 0, 0, # Byte offset of the first stitch
             ] + stitches
 
 jefBytes = bytes(jefBytes)
-with open("test.jef", "wb") as f:
+with open("pattern.jef", "wb") as f:
     f.write(jefBytes)
 
 
